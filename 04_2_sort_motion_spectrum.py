@@ -5,17 +5,20 @@ import os.path
 import sys
 
 
+OUTPUT_DIR_NAME = "downsampled"
+
+
 def main():
 	os.chdir(os.path.join(sys.argv[1], "motion"))
 	try:
-		os.mkdir("klein")
+		os.mkdir(OUTPUT_DIR_NAME)
 	except OSError:
 		pass
 	
 	#os.system("del klein\\*.png")
-	os.system("convert motion_*.png -adaptive-resize 500x500! klein\\motion_%02d.png")
+	os.system("convert motion_*.png -adaptive-resize 500x500! " + OUTPUT_DIR_NAME + "\\motion_%02d.png")
 	
-	os.chdir("klein")
+	os.chdir(OUTPUT_DIR_NAME)
 	os.system("convert motion_*.png -append result.png")
 	
 	img = cv.LoadImageM("result.png")
