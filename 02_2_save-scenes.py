@@ -20,6 +20,8 @@ def main():
 	movie = tree.getroot()
 	# frame count 
 	movie.set("frames", str( frames[-1] - frames[0] ))
+	movie.set("start_frame", str( frames[0] ))
+	movie.set("end_frame", str( frames[-1] - 1 ))
 	tree.write("project.xml")
 	
 	f = open(os.path.join(os.getcwd(), "shots.txt"), "w")

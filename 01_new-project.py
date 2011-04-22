@@ -29,6 +29,8 @@ def main():
 	os.chdir(os.path.join(PROJECTS_DIR_NAME, project_dir))
 	tree.write("project.xml")
 	
+	print "don't forget to crop / remove any black borders!"
+	
 	raw_input("- done -")
 	return
 

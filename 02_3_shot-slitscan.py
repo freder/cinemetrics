@@ -25,6 +25,11 @@ def main():
 	cap = cv.CreateFileCapture(file_path)
 	cv.QueryFrame(cap)
 	
+	# skip frames in the beginning, if neccessary
+	start_frame = int( movie.attrib["start_frame"] )
+	for i in range(start_frame):
+		cv.QueryFrame(cap)
+	
 	f = open("shots.txt", "r")
 	lines = [line for line in f if line]
 	f.close()

@@ -119,10 +119,9 @@ def main():
 	cv.CvtColor(output_img, output_img_rgb, cv.CV_HLS2BGR)
 	cv.SaveImage("_RESULT.png", output_img_rgb)
 	
+	os.chdir( r"..\.." )
 	f = open("colors.txt", "w")
 	row = cv.GetRow(output_img_rgb, 0)
-	
-	os.chdir(project_root_dir)
 	
 	counter = 0
 	last_px = cv.Get1D(row, 0)

@@ -113,3 +113,38 @@ def hsv_sort(a, b): # HSV
 				return -1
 			else:
 				return 0"""
+
+import math
+def timecode_to_seconds(tc):
+	# 00:12:34,567
+	h = int(tc[0:2])
+	m = int(tc[3:5])
+	s = int(tc[6:8])
+	milli = int(tc[-3:])
+	return (milli/1000.0) + s + (m*60) + (h*60*60)
+
+
+def seconds_to_timecode(s):
+	h = int(math.floor(float(s) / (60*60)))
+	m = int(math.floor(float(s) % (60*60)) / 60)	
+	s = s - (m*60) - (h*60*60)
+	
+	if h > 10:
+		h = str(h)
+	else:
+		h = "0" + str(h)
+	
+	if m > 10:
+		m = str(m)
+	else:
+		m = "0" + str(m)
+	
+	if s > 10:
+		s = str(s)
+	else:
+		s = "0" + str(s)
+		
+	s = s.replace('.', ',')[:6]
+	s = s + (6 - len(s)) * "0"
+	
+	return h + ":" + m + ":" + s
