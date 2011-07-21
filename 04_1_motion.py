@@ -6,6 +6,8 @@ import sys
 import xml.etree.ElementTree as et
 import time
 
+from lib import skip_frames
+
 
 # TODO
 # - last 499
@@ -35,7 +37,7 @@ def main():
 		cv.MoveWindow("win", 200, 200)
 	
 	cap = cv.CreateFileCapture(file_path)
-	cv.QueryFrame(cap)
+	skip_frames(cap, movie)
 	
 	pixel_count = None
 	prev_img = None
@@ -66,8 +68,10 @@ def main():
 		for frame_counter in range(duration):
 			img = cv.QueryFrame(cap)
 			if not img:
+				print "error?"
 				print nr, frame_counter
-				break
+				#break
+				return
 			
 			if DEBUG:
 				cv.ShowImage("win", img)

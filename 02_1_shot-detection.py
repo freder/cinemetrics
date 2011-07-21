@@ -17,11 +17,23 @@ soundfile = "ton.wav"
 
 
 def main():
+	BLACK_AND_WHITE = False
+	THRESHOLD = 0.48
+	BW_THRESHOLD = 0.4
+	
 	os.chdir(sys.argv[1])
 	try:
 		os.mkdir(OUTPUT_DIR_NAME)
 	except:
 		pass
+	
+	if len(sys.argv) > 2:
+		if sys.argv[2] == "bw":
+			BLACK_AND_WHITE = True
+			THRESHOLD = BW_THRESHOLD
+			print "##########"
+			print " B/W MODE"
+			print "##########"
 	
 	tree = et.parse("project.xml")
 	movie = tree.getroot()
@@ -77,7 +89,9 @@ def main():
 		for i in range(1, 4):
 			cv.SetImageCOI(diff, i)
 			d_color += float(cv.CountNonZero(diff)) / float(pixel_count)
-		d_color = float(d_color/3.0) # 0..1
+		
+		if not BLACK_AND_WHITE:
+			d_color = float(d_color/3.0) # 0..1
 		
 		# #####################
 		# METHOD #2: calculate the amount of change in the histograms
@@ -104,7 +118,7 @@ def main():
 		d_hist = cv.CompareHist(prev_hist, hist, cv.CV_COMP_INTERSECT)
 		
 		# combine both methods to make a decision
-		if ((0.4*d_color + 0.6*(1-d_hist))) >= 0.48:
+		if ((0.4*d_color + 0.6*(1-d_hist))) >= THRESHOLD:
 			if DEBUG:
 				if frame_counter % 2 == 0:
 					cv.ShowImage("win", img)

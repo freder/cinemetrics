@@ -22,14 +22,16 @@ from lib import smooth
 
 def main():
 	os.chdir(sys.argv[1])
+	f_out = open("smooth_audio.txt", "w")
 	
 	tree = et.parse("project.xml")
 	movie = tree.getroot()
 	path = movie.attrib["path"]
 	path = os.path.dirname(path)
+	fps = float( movie.attrib["fps"] )
 	
 	os.chdir(path)
-	file = os.path.join(path, "audio.wav")
+	file = os.path.join(path, "audio_trimmed.wav")
 	print file
 
 	f = wave.open(file, "rb")
@@ -60,8 +62,9 @@ def main():
 		
 		# normalize [0, 1]
 		#values = values / 2**(bit-1)
-		#values = values / float(max)
-		values = values * float(1) # why do I need that?
+		values = values / float(max)
+		
+		#values = values * float(1) # why do I need that?
 		
 		# root mean square
 		values = numpy.power(values, 2)
@@ -69,13 +72,27 @@ def main():
 		data_rms = numpy.append(data_rms, rms)
 		
 		# decibel
-		db = 20 * numpy.log10( (1e-20+rms) / float(max) )
+		db = 20 * numpy.log10( (1e-20+rms) ) #/ float(max)
 		data_db = numpy.append(data_db, db)
 
 	#plt.ylim(-60, 0)
-	plt.plot(smooth(data_rms/numpy.max(data_rms), window_len=rate/25), "k-")
-	plt.plot(smooth(data_db, window_len=rate/25), "g-")
+	
+	#plt.plot( smooth(data_rms/numpy.max(data_rms), window_len=rate/(fps*2)), "k-" )
+	#plt.plot(smooth(data_db, window_len=rate/fps), "g-")
+	
+	smooth_db = 1 + smooth(data_db, window_len=rate/(fps*3)) / (60.0) # [0..1]
+	plt.ylim(0, 1)
+	plt.plot(smooth_db, "g-")
+	
+	for item in smooth_db:
+		if item < 0:
+			item = 0
+		f_out.write("%f\n" % float(item))
+	f_out.close()
+	
+	
 	#plt.plot(data_db)
+	
 	plt.show()
 
 

@@ -1,3 +1,15 @@
+import cv
+def skip_frames(cap, movie):
+	cv.QueryFrame(cap) # why exactly do I need to skip the first one?
+	
+	# skip frames in the beginning (credits, etc), if neccessary
+	start_frame = int( movie.attrib["start_frame"] )
+	start_frame -= 1
+	print "skipping", start_frame, "frames"
+	for i in range(start_frame):
+		cv.QueryFrame(cap)
+
+
 import numpy
 def smooth(x, window_len=11, window='hanning'):
 	"""smooth the data using a window with requested size.

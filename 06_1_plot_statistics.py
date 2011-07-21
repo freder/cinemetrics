@@ -103,19 +103,57 @@ def main():
 	plt.show()
 	
 	# ===== TEST ==================================================================================================
-	smooth_deriv = 100 * smooth( numpy.diff( smooth_data ), window_len=10*WINDOW_LEN )[WINDOW_LEN:-WINDOW_LEN]
-	smooth_motion = smooth_data[WINDOW_LEN:-WINDOW_LEN]
-	
-	for x, y in enumerate(smooth_deriv):
-		m = smooth_motion[x]
-		if x % 2 == 0:
-			plt.vlines(x, y-m, y+m, lw=m*2)
-	
-	plt.plot(smooth_deriv, "w-", lw=1)
-	mini = min(len(smooth_deriv), len(smooth_motion))
-	plt.fill_between(range(mini), smooth_deriv[:mini], smooth_deriv[:mini]+smooth_motion[mini], color="y")
-	plt.axis(ymin=-1, ymax=1, xmin=0, xmax=len(durations_sec)-1)
-	plt.show()
+	if False:
+		smooth_duration = 0.5 * smooth_data / numpy.max(smooth_data)
+		smooth_deriv = 100 * smooth( numpy.diff( smooth_data ), window_len=10*WINDOW_LEN )[WINDOW_LEN:-WINDOW_LEN]
+		smooth_motion = smooth_data[WINDOW_LEN:-WINDOW_LEN]
+		
+		'''for x, y in enumerate(smooth_deriv):
+			m = smooth_motion[x]
+			if x % 2 == 0:
+				plt.vlines(x, y-m, y+m, lw=m*2)
+		
+		plt.plot(smooth_deriv, "w-", lw=1)
+		mini = min(len(smooth_deriv), len(smooth_motion))
+		plt.fill_between(range(mini), smooth_deriv[:mini], smooth_deriv[:mini]+smooth_motion[mini], color="y")
+		plt.axis(ymin=-1, ymax=1, xmin=0, xmax=len(durations_sec)-1)
+		plt.show()'''
+		
+		
+		# audio
+		f = open("..\\smooth_audio.txt", "r")
+		values = [float(line) for line in f if line]
+		f.close()
+		audio_step = float(len(values)) / float(len(smooth_deriv))
+		audio_counter = 0
+		
+		
+		fig = plt.figure()
+		ax = fig.add_subplot(111, polar=True)
+		
+		STEP = math.ceil(0.01* len(smooth_deriv) / float(2*math.pi) )
+		
+		for x, y in enumerate(smooth_deriv):
+			if x % STEP == 0:
+				x = 2*math.pi * float(x) / len(smooth_deriv)
+				y += 2
+				audio_value = 0.75 * values[int( audio_counter * audio_step )]
+				ax.vlines(x, y+0.01, y+0.01+audio_value, lw=audio_value*2, color="y")
+				audio_counter += 1
+		
+		for x, y in enumerate(smooth_deriv):
+			m = smooth_motion[x]
+			#d = smooth_duration[x]
+			if x % STEP == 0:
+				x = 2*math.pi * float(x) / len(smooth_deriv)
+				y += 2
+				ax.vlines(x, y+0.01, y+0.01+m, lw=m*2)
+				
+				"""audio_value = 0.75 * values[int( audio_counter * audio_step )]
+				ax.vlines(x, y-0.01, y-0.01-audio_value, lw=audio_value*2)
+				audio_counter += 1"""
+		
+		plt.show()
 	
 	# ===== RADAR ==================================================================================================
 	asl = numpy.mean(durations)
