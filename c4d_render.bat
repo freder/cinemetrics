@@ -1,1 +1,0 @@
-"c:\Program Files\MAXON\CINEMA 4D R12\CINEMA 4D 64 Bit.exe" -nogui -render spline_test.c4d -oimage spline_test_2.png

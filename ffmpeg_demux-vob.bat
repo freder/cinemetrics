@@ -1,1 +1,0 @@
-ffmpeg -i VTS_01_1.VOB -an -sn -vcodec copy -f rawvideo output.mpeg
