@@ -1,0 +1,1 @@
+ffmpeg -i VTS_01_1.VOB -vcodec copy -acodec copy output.mpg
