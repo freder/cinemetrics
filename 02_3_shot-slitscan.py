@@ -82,7 +82,7 @@ def main():
 		cv.SaveImage(OUTPUT_DIR_NAME + "\\shot_slitscan_%03d_%d.png" % (nr+1, start_frame), output_img)
 	
 	print "%.2f min" % ((time.time()-t) / 60)
-	raw_input("- done -")
+	#raw_input("- done -")
 	return
 	
 

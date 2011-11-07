@@ -53,6 +53,30 @@ def main():
 	plt.show()
 	#plt.savefig(os.path.join(OUTPUT_DIR_NAME, "duration.ps"))
 	
+	# ===== SHOTS ==================================================================================================
+	f = open("..\\shots.txt", "r")
+	values = [[int(values[0]), int(values[1]), int(values[2])] for values in [line.split("\t") for line in f if line]]
+	f.close()
+	
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	plt.ylim(ymin=5, ymax=15.5)
+	#ax.set_yscale("log")
+	for i, item in enumerate(values):
+		#print item
+		frame_start, frame_end, length = item
+		y = 10
+		if i % 2 == 0:
+			color = (0, 0, 0)
+		else:
+			color = (0.5, 0.5, 0.5)
+			y = 10.5
+		#ax.hlines(length/100.0, frame_start, frame_end, color=color, lw=100)
+		ax.hlines(y, frame_start, frame_end, color=color, lw=30)
+	
+	ax.axis("off")
+	plt.show()
+	
 	# ===== TRENDLINES ==================================================================================================
 	f = open("..\\motion_shot-avg.txt", "r")
 	values = [[float(values[0]), int(values[1])] for values in [line.split("\t") for line in f if line]]
@@ -182,30 +206,6 @@ def main():
 	for i in range(len(properties)):
 		ax.vlines(angles[i], 0, properties[properties.keys()[i]], lw=15)
 	#ax.axis("off")
-	plt.show()
-	
-	# ===== SHOTS ==================================================================================================
-	f = open("..\\shots.txt", "r")
-	values = [[int(values[0]), int(values[1]), int(values[2])] for values in [line.split("\t") for line in f if line]]
-	f.close()
-	
-	fig = plt.figure()
-	ax = fig.add_subplot(111)
-	plt.ylim(ymin=5, ymax=15.5)
-	#ax.set_yscale("log")
-	for i, item in enumerate(values):
-		#print item
-		frame_start, frame_end, length = item
-		y = 10
-		if i % 2 == 0:
-			color = (0, 0, 0)
-		else:
-			color = (0.5, 0.5, 0.5)
-			y = 10.5
-		#ax.hlines(length/100.0, frame_start, frame_end, color=color, lw=100)
-		ax.hlines(y, frame_start, frame_end, color=color, lw=30)
-	
-	ax.axis("off")
 	plt.show()
 	
 	"""

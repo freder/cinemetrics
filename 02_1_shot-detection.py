@@ -162,7 +162,7 @@ def main():
 		cv.DestroyWindow("win");
 	
 	print "%.2f min" % ((time.time()-t) / 60)
-	raw_input("- done -")
+	#raw_input("- done -")
 	return
 
 

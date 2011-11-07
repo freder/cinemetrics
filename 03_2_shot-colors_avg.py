@@ -91,7 +91,7 @@ def main():
 	os.chdir(OUTPUT_DIR_NAME)
 	os.system("convert shot_colors_*.png -append result.png")
 	
-	raw_input("- done -")
+	#raw_input("- done -")
 	return
 
 

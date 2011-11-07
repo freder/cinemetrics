@@ -17,7 +17,11 @@ f.close()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-last_endframe = 0
+#last_endframe = 0
+tree = et.parse("project.xml")
+movie = tree.getroot()
+last_endframe = int( movie.attrib["start_frame"] )
+
 for i, item in enumerate(values):
 	y = 1
 	if (i % 2 == 0):
